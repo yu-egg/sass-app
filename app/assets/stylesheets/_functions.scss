@@ -1,0 +1,7 @@
+@function getColumnWidth($width, $count) {
+  // $columnWidthを計算
+  $padding: 10px; //関数の中で定義したものは@function内でしか使えない。.gridで使おうとしても使えない
+  $columnWidth: floor(($width - ($padding * ($count - 1))) / $count);
+  @debug $columnWidth;
+  @return $columnWidth;
+}
