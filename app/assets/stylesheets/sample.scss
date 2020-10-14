@@ -1,0 +1,142 @@
+// Place all the styles related to the sample controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+$baseFontSize: 14px; //$で変数の定義ができる
+$imgDir: "../img/";
+$brandColor: #eee; //rgba(255,0,0,9);と書くこともできる
+$debugMode: true; //条件分岐 @if @else endはない
+$x: 10;
+
+#main {
+  width: 90%;
+  background: url($imgDir + "bg.png"); //("#{$imgDir}bg.png")と書くこともできる。
+  p {
+    @if $debugMode == true { // == != < > <= >= なども使える
+        color: red;
+    } @else {
+        color: green;
+    }
+    font-size: $baseFontSize - 2px; //-2pxとすると、14-2=12pxとなる。#を使って#{12 + 12}px;と記述する方法もある
+    color: lighten($brandColor, 30%); //darkenもある
+    a {
+        @if $x > 20 { color: yellow; } //こんな使い方もできる
+        text-decoration: none;
+        &:hover {
+            font-weight: bold;
+        }
+    }
+  }
+}
+
+//ループ、@for @whileを使って繰り返し処理
+// .fs10 { font-size: 10px: }
+
+@for $i from 10 through 14 {
+    .fs#{$i} { font-size: #{$i}px; }
+}
+
+$i: 10;
+@while $i <= 14 {
+    .fs#{$i} { font-size: #{$i}px; }
+    $i: $i + 1;
+}
+//出力結果 @for @while両方とも
+.fs10 {
+  font-size: 10px;
+}
+.fs11 {
+  font-size: 11px;
+}
+.fs12 {
+  font-size: 12px;
+}
+.fs13 {
+  font-size: 13px;
+}
+.fs14 {
+  font-size: 14px;
+}
+
+//リスト（似たようなデータをまとめて管理）
+$animals: cat, dog, tiger;
+
+@each $animal in $animals {
+    .#{$animal}-icon { background: url("#{$animal}.png"); }
+}
+//出力結果
+.cat-icon {
+  background: url("cat.png");
+}
+.dog-icon {
+  background: url("dog.png");
+}
+.tiger-icon {
+  background: url("tiger.png");
+}
+
+//関数
+
+//_setting.scssファイルに記述
+// $totalWidth: 940px; //ここで定義した関数は以下だったらどこでも使える
+// $columnCount: 5; 
+
+//_functions.scssファイルに記述
+// @function getColumnWidth($width, $count) {
+//     // $columnWidthを計算
+//     $padding: 10px; //関数の中で定義したものは@function内でしか使えない。.gridで使おうとしても使えない
+//     $columnWidth: floor(($width - ($padding * ($count - 1))) / $count);
+//     @debug $columnWidth;
+//     @return $columnWidth;
+// }
+
+@import "settings"; //importでファイルの呼び出し
+@import "functions";
+
+.grid {
+  float: left;
+  width: getColumnWidth($totalWidth, $columnCount);
+}
+
+//mixin  設定をまとめて管理できるmixinの使い方
+@mixin round($radius:4px) { //mixinの定義方法、mixinは引数を持つことができる.:4pxは初期値を設定する場合に指定する
+    border-radius: $radius;
+}
+
+.label {
+  font-size: 12px;
+  @include round(5px); //roundはmixinの名前
+}
+
+//スタイルを継承していくことができる@extendについて、その使い方を学んでいきます。
+.msg {
+    font-size: 12px;
+    font-weight: bold;
+    padding: 2px, 4px;
+    color: white;
+}
+
+.errorMsg {
+  @extend .msg; //@extendで.msgを呼び出す
+  background: red;
+}
+
+.warningMsg {
+  @extend .msg;
+  background: orange;
+}
+
+//@extend不使用の場合
+// .errorMsg {  
+//     font-size: 12px;
+//     font-weight: bold;
+//     padding: 2px, 4px;
+//     background: red;
+//     color: white;
+// }
+// .warningMsg {
+//     font-size: 12px;
+//     font-weight: bold;
+//     padding: 2px, 4px;
+//     background: orange;
+//     color: white;
+// }
