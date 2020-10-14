@@ -7,6 +7,10 @@ $brandColor: #eee; //rgba(255,0,0,9);と書くこともできる
 $debugMode: true; //条件分岐 @if @else endはない
 $x: 10;
 
+h1 {
+  color: aqua;
+}
+
 #main {
   width: 90%;
   background: url($imgDir + "bg.png"); //("#{$imgDir}bg.png")と書くこともできる。
